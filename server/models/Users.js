@@ -1,6 +1,4 @@
-const mongoose = require("mongoose");
-
-const Schema = mongoose.Schema;
+const {Schema, model} = require("mongoose");
 
 const uniqueValidator = require("mongoose-unique-validator");
 
@@ -25,13 +23,16 @@ const UserSchema = new Schema({
     password: {
         type: String,
         require: true
+    },
+    id: {
+        type: String,
     }
 });
 
 UserSchema.methods.toJSON = function() {
     let user = this;
     let userObject = user.toObject();
-    delete userObject.pass;
+    delete userObject.password;
 
     return userObject;
 };
@@ -40,4 +41,4 @@ UserSchema.plugin(uniqueValidator, {
     message: "{PATH} this value already exists in our database"
 });
 
-module.exports = mongoose.model("Users", UserSchema);
+module.exports = model("Users", UserSchema);

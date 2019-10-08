@@ -13,7 +13,7 @@ process.env.SEED = process.env.SEED || "developer";
 //BASE DE DATOS
 let db;
 if (process.env.NODE_ENV === "dev") {
-    db = "mongodb://localhost:27017/testing";
+    db = "mongodb://localhost:27017/ajabuenopues";
 } else {
     db = process.env.MONGO_URI;
 }
