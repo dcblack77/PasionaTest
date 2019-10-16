@@ -1,7 +1,7 @@
 const {Schema, model} = require('mongoose');
 
 
-let PolicesSchema = new Schema({
+let PoliciesSchema = new Schema({
     id: {
         type: String,
         require: true,
@@ -24,8 +24,9 @@ let PolicesSchema = new Schema({
         require: true,
     },
     clientId: {
-        type: String
+        type: Schema.Types.ObjectId,
+        ref:'users'
     }
 });
 
-module.exports = model("Polices", PolicesSchema);
+module.exports = model("Policies", PoliciesSchema);
