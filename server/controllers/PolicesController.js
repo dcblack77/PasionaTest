@@ -27,7 +27,7 @@ let MigratePolices = (req, res) => {
                         console.log('no User');
                         res.json({ msg: 'User no found' }) 
                     }
-                    users = userdb;
+                    
                     //console.log('yes User');
                     Policies.findOne({ id: policie.id }, (err, poli) => {
                         if (err) {
@@ -36,21 +36,23 @@ let MigratePolices = (req, res) => {
                             
                         }
                         if (!poli) {
-                            console.log(users);
+                            console.log(userdb);
                             let newPolicie = new Policies({
                                 id: policie.id,
                                 amountInsured: policie.amountInsured,
                                 email: policie.email,
                                 inceptionDate: policie.inceptionDate,
                                 installmentPayment: policie.installmentPayment,
-                                clientId: users._id,
+                                clientId: userdb._id,
                             });
-                            users = {};
-                            newPolicie.save((err, policiedb) => {
+                            //users = {};
+                            /* newPolicie.save((err, policiedb) => {
                                 if (err) res.json(err)
                                 policiesdb.push({ ok: 'storage', policiedb })
-                            });
+                             });*/
+
                         }
+                        console.log(userdb);
                         //console.log('policies exist', poli);
                     })
                 })
