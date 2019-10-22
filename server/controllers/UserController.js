@@ -66,10 +66,54 @@ let MigrateUsers = async (req, res) => {
     });
 };
 
-let LoginUser = (req, res) => {};
+let LoginUser = (req, res) => {
+    let body = req.body;
+
+    Usuario.findOne({ email: body.email }, (err, userdb) => {
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+
+        if (!userdb) {
+            return res.status(400).json({
+                ok: false,
+                err: {
+                    message: 'User no found'
+                }
+            });
+        }
+
+
+        if (!bcrypt.compareSync(body.password, userdb.password)) {
+            return res.status(400).json({
+                ok: false,
+                err: {
+                    message: 'Password no found'
+                }
+            });
+        }
+
+        let token = jwt.sign({
+            user: userdb
+        }, process.env.SEED, { expiresIn: process.env.CADUCIDAD_TOKEN });
+
+        res.json({
+            ok: true,
+            user: userdb,
+            token
+        });
+
+
+    });
+};
 
 module.exports = {
     MigrateUsers,
     GetUsers,
-    GetUser
+    GetUser,
+    LoginUser
 };

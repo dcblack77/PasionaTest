@@ -17,18 +17,7 @@ let MigratePolices = (req, res) => {
                 //console.log('forEach');
 
                 Users.findOne({ id: policie.clientId }, (err, userdb) => {
-                    //console.log('userfind', user);
-                    if (err) { 
-                        console.log('err User');
-                        res.json(err)
-
-                    }
-                    if (!userdb) {
-                        console.log('no User');
-                        res.json({ msg: 'User no found' }) 
-                    }
                     
-                    //console.log('yes User');
                     Policies.findOne({ id: policie.id }, (err, poli) => {
                         if (err) {
                             console.log('err Policies');
@@ -46,10 +35,10 @@ let MigratePolices = (req, res) => {
                                 clientId: userdb._id,
                             });
                             //users = {};
-                            /* newPolicie.save((err, policiedb) => {
+                            newPolicie.save((err, policiedb) => {
                                 if (err) res.json(err)
                                 policiesdb.push({ ok: 'storage', policiedb })
-                             });*/
+                             });
 
                         }
                         console.log(userdb);
@@ -57,7 +46,11 @@ let MigratePolices = (req, res) => {
                     })
                 })
             });
-            res.json({ policies: policiesdb })
+        })
+        Policies.find({}, (err, policiedbs) =>{
+            res.json({
+                policies: policiedbs
+            })
         })
 }
 
@@ -66,8 +59,23 @@ let GetPolicies = async (req, res) => {
     res.json({ policies })
 }
 
+let GetPolicie = async (req, res) => {
+    let param = req.params.param;
+    let policie;
+    /* if (param.search(/[^a-zA-Z]+/) === -1) {
+        police = await Policies.findOne({name: param}).populate('users')
+        res.json(police)
+    } */
+    policie = await Policies.findById(param)
+    res.json({
+        policie
+    })
+
+}
+
 
 module.exports = {
     MigratePolices,
-    GetPolicies
+    GetPolicies,
+    GetPolicie
 }
